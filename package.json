@@ -1,0 +1,24 @@
+{
+  "name": "shiftledger",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Restaurant ops demo: shifts, tip pools, sidework, labor hours",
+  "license": "MIT",
+  "workspaces": [
+    "apps/web",
+    "services/api"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @shiftledger/api & npm run dev -w @shiftledger/web; wait",
+    "dev:api": "npm run dev -w @shiftledger/api",
+    "dev:web": "npm run dev -w @shiftledger/web",
+    "build": "npm run build -w @shiftledger/api && npm run build -w @shiftledger/web",
+    "test": "npm run test -w @shiftledger/api",
+    "migrate": "npm run migrate -w @shiftledger/api",
+    "smoke": "node scripts/smoke.mjs",
+    "lint": "npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

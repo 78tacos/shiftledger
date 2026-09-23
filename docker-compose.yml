@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: shiftledger
+      POSTGRES_PASSWORD: shiftledger
+      POSTGRES_DB: shiftledger
+      TZ: America/Chicago
+      PGTZ: America/Chicago
+    ports:
+      - "5432:5432"
+    volumes:
+      - shiftledger_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shiftledger -d shiftledger"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    environment:
+      DATABASE_URL: postgres://shiftledger:shiftledger@db:5432/shiftledger
+      JWT_SECRET: shiftledger-demo-jwt-secret-not-for-prod
+      PORT: "3001"
+      HOST: 0.0.0.0
+      MIGRATIONS_DIR: /app/db/migrations
+    ports:
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  shiftledger_pg:
