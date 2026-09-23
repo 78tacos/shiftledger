@@ -78,7 +78,9 @@ VALUES
   )
 ON CONFLICT (id) DO NOTHING;
 
--- Last Friday and tonight in the restaurant timezone.
+-- Last Friday and tonight on the restaurant calendar (America/Chicago).
+-- Do not use CURRENT_DATE: Compose Postgres is UTC, so after ~19:00 CT the
+-- UTC date rolls forward and the UI "Tonight" / last-Friday buttons miss seed.
 INSERT INTO service_periods (id, restaurant_id, service_date, label, starts_at, ends_at)
 SELECT
   'dddddddd-dddd-4ddd-8ddd-dddddddd0001',
@@ -88,7 +90,8 @@ SELECT
   (last_fri + TIME '16:00') AT TIME ZONE 'America/Chicago',
   (last_fri + TIME '23:00') AT TIME ZONE 'America/Chicago'
 FROM (
-  SELECT (CURRENT_DATE - ((EXTRACT(ISODOW FROM CURRENT_DATE)::integer + 1) % 7 + 1))::date AS last_fri
+  SELECT (today - ((EXTRACT(ISODOW FROM today)::integer + 1) % 7 + 1))::date AS last_fri
+  FROM (SELECT (timezone('America/Chicago', now()))::date AS today) t
 ) d
 ON CONFLICT (id) DO NOTHING;
 
@@ -96,10 +99,11 @@ INSERT INTO service_periods (id, restaurant_id, service_date, label, starts_at, 
 SELECT
   'dddddddd-dddd-4ddd-8ddd-dddddddd0002',
   'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaa0001',
-  CURRENT_DATE,
+  today,
   'dinner',
-  (CURRENT_DATE + TIME '16:00') AT TIME ZONE 'America/Chicago',
-  (CURRENT_DATE + TIME '23:00') AT TIME ZONE 'America/Chicago'
+  (today + TIME '16:00') AT TIME ZONE 'America/Chicago',
+  (today + TIME '23:00') AT TIME ZONE 'America/Chicago'
+FROM (SELECT (timezone('America/Chicago', now()))::date AS today) d
 ON CONFLICT (id) DO NOTHING;
 
 -- Friday closed shifts (clocked)

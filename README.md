@@ -74,7 +74,7 @@ Vite proxies `/api` to the Fastify server on port 3001.
 ## What the seed contains
 
 - Restaurant **Jalea Demo**, timezone `America/Chicago`
-- Two service periods: **last Friday dinner** (closed tip pool + clocked shifts) and **tonight dinner** (open board)
+- Two service periods: **last Friday dinner** (closed tip pool + clocked shifts) and **tonight dinner** (open board), dated in `America/Chicago` (not UTC `CURRENT_DATE`)
 - Friday pool: $247.50 in cents, split by points (servers 1.0, host 0.5)
 - Sidework template **Close dining** (5 items); Luca’s Friday shift has three checked
 

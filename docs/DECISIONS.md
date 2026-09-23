@@ -28,6 +28,8 @@ Schema is multi-tenant-ready (`restaurant_id` on the main tables) but Postgres R
 
 `citext` is not assumed. Uniqueness is `users.email_norm` (`lower(trim(email))`).
 
-## Seed dates are relative
+## Seed dates are relative (Chicago calendar)
 
 The seed story is “last Friday closed / tonight open” so `docker compose up` always has a board to click, not a stale 2026-09-18 only.
+
+Calendar dates are `(timezone('America/Chicago', now()))::date`, not `CURRENT_DATE`. Compose Postgres is UTC; after ~19:00 CT the UTC date is already tomorrow and a UTC `CURRENT_DATE` seed would miss the UI Tonight / last-Friday buttons. `docker-compose` also sets `TZ`/`PGTZ=America/Chicago` on `db`.

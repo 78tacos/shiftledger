@@ -5,6 +5,8 @@ services:
       POSTGRES_USER: shiftledger
       POSTGRES_PASSWORD: shiftledger
       POSTGRES_DB: shiftledger
+      TZ: America/Chicago
+      PGTZ: America/Chicago
     ports:
       - "5432:5432"
     volumes:
