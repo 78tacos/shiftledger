@@ -10,10 +10,9 @@ const loginBody = z.object({
   password: z.string().min(1),
 });
 
-type StaffUserRow = {
+type StaffProfileRow = {
   user_id: string;
   email: string;
-  password_hash: string;
   staff_id: string;
   display_name: string;
   role: StaffRole;
@@ -22,7 +21,11 @@ type StaffUserRow = {
   timezone: string;
 };
 
-function publicUser(row: StaffUserRow) {
+type StaffUserRow = StaffProfileRow & {
+  password_hash: string;
+};
+
+function publicUser(row: StaffProfileRow) {
   return {
     id: row.user_id,
     email: row.email,
@@ -103,12 +106,11 @@ const authPluginImpl: FastifyPluginAsync<{ db: Db }> = async (app, opts) => {
   });
 
   app.get('/auth/me', { preHandler: app.authenticate }, async (request, reply) => {
-    const result = await db.query<StaffUserRow>(
+    const result = await db.query<StaffProfileRow>(
       `
       SELECT
         u.id AS user_id,
         u.email,
-        u.password_hash,
         s.id AS staff_id,
         s.display_name,
         s.role,
