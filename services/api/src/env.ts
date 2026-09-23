@@ -8,7 +8,7 @@ const schema = z.object({
   MIGRATIONS_DIR: z.string().optional(),
 });
 
-export type Env = z.infer<typeof schema>;
+type Env = z.infer<typeof schema>;
 
 export function loadEnv(): Env {
   const parsed = schema.safeParse(process.env);

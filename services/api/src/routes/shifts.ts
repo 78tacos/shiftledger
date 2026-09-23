@@ -97,19 +97,6 @@ export const shiftRoutes: FastifyPluginAsync<{ db: Db }> = async (app, opts) => 
     return { date: parsed.data.date, shifts: result.rows.map(mapShift) };
   });
 
-  app.get('/shifts/:id', { preHandler: app.authenticate }, async (request, reply) => {
-    const { id } = request.params as { id: string };
-    const result = await db.query<ShiftRow>(
-      `${SHIFT_SELECT} WHERE sh.id = $1 AND sh.restaurant_id = $2`,
-      [id, request.user.restaurantId],
-    );
-    const row = result.rows[0];
-    if (!row) {
-      return reply.code(404).send({ error: 'Shift not found' });
-    }
-    return { shift: mapShift(row) };
-  });
-
   app.post('/shifts/:id/clock-in', { preHandler: app.authenticate }, async (request, reply) => {
     const { id } = request.params as { id: string };
     const existing = await db.query<ShiftRow>(

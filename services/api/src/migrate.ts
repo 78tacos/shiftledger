@@ -17,7 +17,7 @@ async function dirExists(dir: string): Promise<boolean> {
   }
 }
 
-export async function resolveMigrationsDir(fromEnv = process.env.MIGRATIONS_DIR): Promise<string> {
+async function resolveMigrationsDir(fromEnv = process.env.MIGRATIONS_DIR): Promise<string> {
   const fallback = defaultMigrationsDir();
   if (!fromEnv) {
     return fallback;
