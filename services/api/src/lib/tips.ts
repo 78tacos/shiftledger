@@ -1,4 +1,4 @@
-export type StaffRole = 'server' | 'cook' | 'host' | 'bartender' | 'manager';
+import type { StaffRole } from '../types.js';
 
 export type PayoutInput = {
   staffId: string;
