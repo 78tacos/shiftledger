@@ -20,16 +20,33 @@ async function req(path, opts = {}) {
   return body;
 }
 
+/** YYYY-MM-DD on the America/Chicago calendar (same as the seed). UTC toISOString is already the next day after ~19:00 CT. */
+function chicagoDate(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Chicago',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const pick = (type) => parts.find((part) => part.type === type).value;
+  return `${pick('year')}-${pick('month')}-${pick('day')}`;
+}
+
 function today() {
-  return new Date().toISOString().slice(0, 10);
+  return chicagoDate();
 }
 
 function lastFriday() {
-  const d = new Date();
-  const dow = d.getDay();
+  const [year, month, day] = chicagoDate().split('-').map(Number);
+  // UTC calendar math so the host timezone cannot shift the civil date.
+  const utc = new Date(Date.UTC(year, month - 1, day));
+  const dow = utc.getUTCDay();
   const delta = dow === 5 ? 7 : (dow + 2) % 7;
-  d.setDate(d.getDate() - delta);
-  return d.toISOString().slice(0, 10);
+  utc.setUTCDate(utc.getUTCDate() - delta);
+  const y = utc.getUTCFullYear();
+  const m = String(utc.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(utc.getUTCDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
 }
 
 const login = await req('/auth/login', {
