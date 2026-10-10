@@ -1,8 +1,8 @@
 # ShiftLedger
 
-Restaurant floor book for a single house: **shifts**, **tip pools**, **sidework**, and **labor hours**.
+Restaurant floor book for a single house: shifts, tip pools, sidework, and labor hours.
 
-This is **v1** of a portfolio demo. The seed restaurant is **Jalea Demo**. Staff names are invented. There is no real PII.
+v1 demo. The seed restaurant is Jalea Demo, with fictional staff.
 
 ![Login](docs/screenshots/login.png)
 ![Shift board](docs/screenshots/board.png)
@@ -31,18 +31,16 @@ This is **v1** of a portfolio demo. The seed restaurant is **Jalea Demo**. Staff
 
 Demo-only credentials. Do not reuse anywhere real.
 
-Seeded staff (fake): Maya Chen (manager), Luca Navarro / Priya Shah / Diego Alvarez (servers), Noor Haddad (host), Kenji Okada (cook).
+Seeded staff: Maya Chen (manager), Luca Navarro, Priya Shah, and Diego Alvarez (servers), Noor Haddad (host), Kenji Okada (cook).
 
 ## How to run
 
-### Docker Compose (preferred demo)
+### Docker Compose
 
 ```bash
 cp .env.example .env
 docker compose up --build
 ```
-
-Then open **http://localhost:8080**.
 
 - Web: `http://localhost:8080`
 - API: `http://localhost:3001` (health: `GET /health`)
@@ -75,7 +73,7 @@ Vite proxies `/api` to the Fastify server on port 3001.
 
 - Restaurant **Jalea Demo**, timezone `America/Chicago`
 - Two service periods: **last Friday dinner** (closed tip pool + clocked shifts) and **tonight dinner** (open board), dated in `America/Chicago` (not UTC `CURRENT_DATE`)
-- Friday pool: $247.50 in cents, split by points (servers 1.0, host 0.5)
+- Friday pool: $247.50, stored as cents and split by points (servers 1.0, host 0.5)
 - Sidework template **Close dining** (5 items); Luca’s Friday shift has three checked
 
 On the board, use **Last Friday** to see the closed service, **Tonight** to clock in/out.
@@ -133,7 +131,7 @@ Runs the points/payout unit tests (the Friday $247.50 seed case included).
 
 ## Out of scope
 
-Payroll tax, POS sync, scheduling AI, multi-location UI, and **Cha Caddy**.
+Payroll tax, POS sync, scheduling AI, and a multi-location UI.
 
 ## License
 

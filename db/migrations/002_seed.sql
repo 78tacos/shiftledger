@@ -1,7 +1,6 @@
--- Jalea Demo seed. Fake names only — no real PII.
--- Dates are relative: last Friday (closed pool) + tonight (open board).
--- Manager login (demo): manager@jalea.demo / jalea-demo-2026
--- Password hash is argon2id of jalea-demo-2026.
+-- Jalea Demo seed.
+-- Dates are relative: last Friday (closed pool) and tonight (open board).
+-- Demo manager: manager@jalea.demo / jalea-demo-2026 (argon2id hash below).
 
 INSERT INTO restaurants (id, name, timezone)
 VALUES (
